@@ -12,7 +12,6 @@ public class SummonPlatform : MonoBehaviour
     Vector3 target;
     public float cooldown = 10;
     public float waitcooldown = 0;
-    bool flag = true;
 
     public float DashForce = 5f;
 

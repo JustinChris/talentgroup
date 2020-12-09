@@ -10,6 +10,8 @@ public class playerDash : MonoBehaviour
     private int direction;
     private Rigidbody2D _rigid;
     Vector3 target;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,36 +22,40 @@ public class playerDash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var movement = Input.GetAxisRaw("Horizontal");
         if (direction == 0)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.Q))
             {
-                if(movement < 0)
-                {
-                    direction = 1;
-                }else if (movement > 0)
-                {
-                    direction = 2;
-                }
+                direction = 1;
+            }else if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.Q))
+            {
+                direction = 2;
+            }else if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.Q))
+            {
+                direction = 3;
             }
-        }else
+        }
+        else
         {
-            if (DashTime <= 0)
+            if(DashTime <= 0)
             {
                 direction = 0;
                 DashTime = startDashTime;
                 _rigid.velocity = Vector2.zero;
-            }else
+            } else
             {
                 DashTime -= Time.deltaTime;
 
-                if(direction == 1)
+                if (direction == 1)
                 {
                     _rigid.velocity = Vector2.left * DashSpeed;
-                }else if (direction == 2)
-                {
+                } 
+                else if (direction == 2) {
                     _rigid.velocity = Vector2.right * DashSpeed;
+                } 
+                else if (direction == 3)
+                {
+                    _rigid.velocity = Vector2.up * DashSpeed;
                 }
             }
         }

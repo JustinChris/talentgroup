@@ -31,7 +31,7 @@ public class playerMovement : MonoBehaviour
         transform.localScale = characterflip;
 
         anim.SetFloat("walkingspeed", Mathf.Abs(movement * movement_speed));
-        if (Input.GetButtonDown("Jump")&& Mathf.Abs(rb.velocity.y) < 0.001f)
+        if (Input.GetButtonDown("Jump")&& Mathf.Abs(rb.velocity.y) < 0.000001f)
         {
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
