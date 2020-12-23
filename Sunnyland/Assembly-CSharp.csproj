@@ -63,8 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\BarrelTrigger.cs" />
     <Compile Include="Assets\Script\BreakableBox.cs" />
+    <Compile Include="Assets\Script\DeathZone.cs" />
     <Compile Include="Assets\Script\LiftCollisionDetect.cs" />
+    <Compile Include="Assets\Script\PlatformCollapsed.cs" />
     <Compile Include="Assets\Script\PlatformDestroy.cs" />
     <Compile Include="Assets\Script\SummonPlatform.cs" />
     <Compile Include="Assets\Script\cameraFollowPlayer.cs" />
@@ -708,6 +711,14 @@
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{00CBE60F-439E-58DF-101B-8FB818734958}</Project>
       <Name>UnityEditor.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="Cinemachine.csproj">
+      <Project>{580762B3-2B58-8B02-449A-BDC36038265C}</Project>
+      <Name>Cinemachine</Name>
+    </ProjectReference>
+    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
+      <Project>{DC3F28BB-F8E8-29DF-43D8-EA3913FF4FB6}</Project>
+      <Name>com.unity.cinemachine.editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

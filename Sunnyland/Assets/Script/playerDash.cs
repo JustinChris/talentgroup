@@ -4,60 +4,70 @@ using UnityEngine;
 
 public class playerDash : MonoBehaviour
 {
-    public float DashSpeed;
-    private float DashTime;
-    public float startDashTime;
-    private int direction;
-    private Rigidbody2D _rigid;
-    Vector3 target;
+    private Rigidbody2D rb;
     
 
-    // Start is called before the first frame update
+    private float dashTime;
+    public float startDashTime;
+    private int direction;
+    public float dashForce;
+    
     void Start()
     {
-        _rigid = GetComponent<Rigidbody2D>();
-        DashTime = startDashTime;
+        rb = GetComponent<Rigidbody2D>();
+        dashTime = startDashTime;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        /*if (Input.GetMouseButtonDown(0))
+        {
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var mouseDirection = mousePosition - this.transform.position;
+            mouseDirection.z = 0;
+            transform.position += mouseDirection;
+        } */
+        
         if (direction == 0)
         {
-            if (Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.Q))
+            if(Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 1;
-            }else if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.Q))
+            }else if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 2;
-            }else if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.Q))
+            }else if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 3;
             }
-        }
-        else
+        }else
         {
-            if(DashTime <= 0)
+            if(dashTime <= 0)
             {
                 direction = 0;
-                DashTime = startDashTime;
-                _rigid.velocity = Vector2.zero;
-            } else
+                dashTime = startDashTime;
+            }else
             {
-                DashTime -= Time.deltaTime;
-
+                dashTime -= Time.deltaTime;
                 if (direction == 1)
                 {
-                    _rigid.velocity = Vector2.left * DashSpeed;
-                } 
-                else if (direction == 2) {
-                    _rigid.velocity = Vector2.right * DashSpeed;
-                } 
-                else if (direction == 3)
+                    rb.velocity = Vector2.left * dashForce;
+                }else if (direction == 2)
                 {
-                    _rigid.velocity = Vector2.up * DashSpeed;
+                    rb.velocity = Vector2.right * dashForce;
+                }else if (direction == 3)
+                {
+                    rb.velocity = Vector2.up * dashForce;
                 }
             }
         }
+
     }
+
+    private void FixedUpdate()
+    {
+        
+    }
+    
+   
 }

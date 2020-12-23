@@ -22,7 +22,7 @@ public class LiftCollisionDetect : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
+        if (collision.gameObject.tag.Equals("Girl"))
         {
             isMoving = true;
         }
