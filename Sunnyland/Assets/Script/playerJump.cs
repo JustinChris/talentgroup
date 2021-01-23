@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class playerJump : MonoBehaviour
 {
-    public float smallJumpMultiplier = 2f;
-    public float gravityMultiplier = 2.5f;
-    public Rigidbody2D _rb;
-    
-    private void Awake()
+    public float lowJumpMultiplier = 2f;
+    public float fallMultiplier = 2.5f;
+    private Rigidbody2D rb;
+
+    private void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
-        if (_rb.velocity.y <= 0)
+        if (rb.velocity.y < 0)
         {
-            _rb.velocity += Vector2.up * Time.deltaTime * (gravityMultiplier - 1) * Physics2D.gravity.y;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
-        else if (_rb.velocity.y <= 1 && Input.GetButtonDown("Jump"))
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
-            _rb.velocity += Vector2.up * Physics2D.gravity.y * (smallJumpMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class SummonPlatform : MonoBehaviour
 {
     public Camera cam;
-    public Rigidbody2D rb;
     public GameObject obj;
     public GameObject lessopacityobj;
     public SpriteRenderer toggle;
@@ -14,11 +13,9 @@ public class SummonPlatform : MonoBehaviour
     public float cooldown = 10;
     public float waitcooldown = 0;
     bool isPressedDown = false;
-    public float DashForce = 5f;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         toggle.enabled = false;
     }
     void Update()
@@ -97,13 +94,14 @@ public class SummonPlatform : MonoBehaviour
         {
             toggle.enabled = true;
             isPressedDown = true;
+            /*
             if (Input.GetMouseButtonDown(0) && isPressedDown )
             {
                 toggle.enabled = false;
                 Instantiate(obj, target, Quaternion.identity);
                 waitcooldown = Time.time + cooldown;
             }
-  
+            */
         }
         
         

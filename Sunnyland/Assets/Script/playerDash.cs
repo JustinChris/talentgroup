@@ -5,7 +5,9 @@ using UnityEngine;
 public class playerDash : MonoBehaviour
 {
     private Rigidbody2D rb;
-    
+
+    public float cooldown = 10f;
+    public float waitcooldown = 0;
 
     private float dashTime;
     public float startDashTime;
@@ -20,53 +22,58 @@ public class playerDash : MonoBehaviour
 
     private void Update()
     {
-        /*if (Input.GetMouseButtonDown(0))
+        if (Time.time > waitcooldown)
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var mouseDirection = mousePosition - this.transform.position;
-            mouseDirection.z = 0;
-            transform.position += mouseDirection;
-        } */
-        
+
+            dashwithCool();
+            
+        }
+    }
+
+    void dashwithCool()
+    {
         if (direction == 0)
         {
-            if(Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 1;
-            }else if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
+            }
+            else if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 2;
-            }else if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+            }
+            else if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
             {
                 direction = 3;
             }
-        }else
+        }
+        else
         {
-            if(dashTime <= 0)
+            if (dashTime <= 0)
             {
                 direction = 0;
                 dashTime = startDashTime;
-            }else
+            }
+            else
             {
                 dashTime -= Time.deltaTime;
                 if (direction == 1)
                 {
                     rb.velocity = Vector2.left * dashForce;
-                }else if (direction == 2)
+                    waitcooldown = Time.time + cooldown;
+                }
+                else if (direction == 2)
                 {
                     rb.velocity = Vector2.right * dashForce;
-                }else if (direction == 3)
+                    waitcooldown = Time.time + cooldown;
+                }
+                else if (direction == 3)
                 {
                     rb.velocity = Vector2.up * dashForce;
+                    waitcooldown = Time.time + cooldown;
                 }
             }
         }
-
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
     
    

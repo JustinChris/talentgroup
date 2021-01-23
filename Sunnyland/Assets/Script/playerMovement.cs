@@ -4,61 +4,71 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
+    private Rigidbody2D rb;
+    public Animator anim;
+    public Transform groundcheck;
+    public LayerMask groundLayer;
+    public Transform frontcheck;
+    public GameObject playerID;
+
     public float movement_speed = 5f;
     public float jumpForce = 5f;
-    Rigidbody2D rb;
-    public Animator anim;
-    private bool isgrounded;
-    public Transform groundcheck;
-    public LayerMask groundlayer;
-
-    bool isTouchingFront;
-    public Transform frontcheck;
-    bool wallsliding;
-    public float wallslidingSpeed;
-
-    bool walljumping;
     public float xwallforce;
     public float ywallforce;
     public float walljumptime;
+    public float walljumpLerp = 10;
 
+    private bool isgrounded;
+    private bool isTouchingFront;
+    private bool wallsliding;
+    public float wallslidingSpeed;
+    private bool walljumping;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    
     private void Update()
     {
-        var movement = Input.GetAxisRaw("Horizontal");
-        transform.position += new Vector3(movement, 0, 0) * Time.deltaTime * movement_speed;
+        playerID.transform.position = transform.position;
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            playerID.SetActive(true);
+            gameObject.SetActive(false);
+        }
+
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        float xRaw = Input.GetAxisRaw("Horizontal");
+        float yRaw = Input.GetAxisRaw("Vertical");
+        Vector2 dir = new Vector2(x, y);
+        walk(dir);
+        //var movement = Input.GetAxisRaw("Horizontal");
+        //transform.position += new Vector3(movement, 0, 0) * Time.deltaTime * movement_speed;
         Vector3 characterflip = transform.localScale;
-        if (movement < 0)
+        if (dir.x < 0)
         {
             characterflip.x = -6;
         }
-        if (movement > 0)
+        if (dir.x > 0)
         {
             characterflip.x = 6;
         }
         transform.localScale = characterflip;
 
-        anim.SetFloat("walkingspeed", Mathf.Abs(movement * movement_speed));
+        anim.SetFloat("walkingspeed", Mathf.Abs(x * movement_speed));
 
-        isgrounded = Physics2D.OverlapCircle(groundcheck.position, 0.2f, groundlayer);
-        isTouchingFront = Physics2D.OverlapCircle(frontcheck.position, 0.2f, groundlayer);
+        isgrounded = Physics2D.OverlapCircle(groundcheck.position, 0.2f, groundLayer);
+        isTouchingFront = Physics2D.OverlapCircle(frontcheck.position, 0.2f, groundLayer);
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isgrounded)
         {
-            if (isgrounded)
-            {
-                jump();
-            }
+            jump(Vector2.up);
         }
-        if (isTouchingFront && isgrounded == false && movement != 0)
+        if (isTouchingFront && isgrounded == false &&  dir.x != 0)
         {
             wallsliding = true;
         }else
@@ -76,18 +86,23 @@ public class playerMovement : MonoBehaviour
         }
         if (walljumping)
         {
-            rb.velocity = new Vector2(xwallforce * -movement, ywallforce);
+            rb.velocity = new Vector2(xwallforce * -dir.x, ywallforce);
         }
 
 
     }
-    private void jump()
+    private void jump(Vector2 dir)
     {
-        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += dir * jumpForce;
     }
 
     void setWallJumpingtofalse()
     {
         walljumping = false;
+    }
+    private void walk(Vector2 dir)
+    {
+        rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * movement_speed, rb.velocity.y)), walljumpLerp * Time.deltaTime);
     }
 }
